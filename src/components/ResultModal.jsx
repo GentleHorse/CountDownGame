@@ -1,4 +1,5 @@
 import { forwardRef, useImperativeHandle, useRef } from "react";
+import { createPortal } from "react-dom";
 
 const resultModalClasses =
   "border-none rounded-lg p-8 bg-cyan-50/40 backdrop-blur";
@@ -26,8 +27,13 @@ const ResultModal = forwardRef(function ResultModal(
     };
   });
 
-  return (
-    <dialog ref={dialog} id="result-modal" className={resultModalClasses} onClose={onReset}>
+  return createPortal(
+    <dialog
+      ref={dialog}
+      id="result-modal"
+      className={resultModalClasses}
+      onClose={onReset}
+    >
       {userLost && <h2 className={resultModalHeaderClasses}>You lost</h2>}
       {!userLost && (
         <h2 className={resultModalHeaderClasses}>Your score: {score} / 100</h2>
@@ -47,7 +53,9 @@ const ResultModal = forwardRef(function ResultModal(
       <form method="dialog" className="text-right" onSubmit={onReset}>
         <button className={resultModalButtonClasses}>Close</button>
       </form>
-    </dialog>
+    </dialog>,
+
+    document.getElementById("modal")
   );
 });
 
